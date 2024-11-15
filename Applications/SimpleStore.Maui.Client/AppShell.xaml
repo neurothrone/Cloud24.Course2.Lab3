@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Shell
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages1="clr-namespace:SimpleStore.Maui.Client.Views.Pages"
+    x:Class="SimpleStore.Maui.Client.AppShell"
+    FlyoutBehavior="Disabled"
+    Navigated="OnNavigatedHandle"
+    Title="SimpleStore">
+
+    <TabBar>
+        <ShellContent Title="Products" ContentTemplate="{DataTemplate pages1:ProductsPage}" />
+        <ShellContent Title="Cart" ContentTemplate="{DataTemplate pages1:CartPage}" />
+        <ShellContent Title="Settings" ContentTemplate="{DataTemplate pages1:SettingsPage}" />
+    </TabBar>
+
+</Shell>

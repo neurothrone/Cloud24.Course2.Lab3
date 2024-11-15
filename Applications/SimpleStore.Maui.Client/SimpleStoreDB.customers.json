@@ -1,0 +1,26 @@
+[
+  {
+    "customer_id": "228d0a39279c457788a244a9915e42a9",
+    "username": "Knatte",
+    "password": "123",
+    "total_spent": {
+      "$numberDouble": "0.0"
+    }
+  },
+  {
+    "customer_id": "c181d614b87c4aaf8668c679c38b7570",
+    "username": "Fnatte",
+    "password": "321",
+    "total_spent": {
+      "$numberDouble": "50.0"
+    }
+  },
+  {
+    "customer_id": "f7cad9652b434ab7a5814f118e994ac9",
+    "username": "Tjatte",
+    "password": "213",
+    "total_spent": {
+      "$numberDouble": "100.0"
+    }
+  }
+]

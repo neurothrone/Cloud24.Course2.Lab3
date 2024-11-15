@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleStore.Maui.Client.ViewModels"
+             xmlns:controls="clr-namespace:SimpleStore.Maui.Client.Views.Controls"
+             x:Class="SimpleStore.Maui.Client.Views.Pages.AuthPage"
+             x:DataType="viewModels:AuthViewModel"
+             Title="Auth Page">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
+
+            <Label
+                TextColor="MidnightBlue"
+                Text="Simple Store"
+                Style="{StaticResource Headline}" />
+
+            <Image
+                Source="dotnet_bot.png"
+                HeightRequest="150"
+                Aspect="AspectFit" />
+
+            <Border WidthRequest="300"
+                    Margin="0,0,0,20"
+                    Padding="10"
+                    Stroke="MidnightBlue"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    BackgroundColor="AliceBlue">
+
+                <VerticalStackLayout Padding="10"
+                                     Spacing="10">
+
+                    <Label Text="Username" />
+                    
+                    <controls:CustomEntry
+                        Placeholder="Enter username"
+                        Text="{Binding Username}" />
+
+                    <Label Text="Password" />
+                    <controls:CustomEntry
+                        IsPassword="True"
+                        Placeholder="Enter password"
+                        Text="{Binding Password}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button
+                WidthRequest="300"
+                BackgroundColor="MidnightBlue"
+                TextColor="White"
+                Text="Sign in"
+                IsEnabled="{Binding IsFormValid}"
+                Command="{Binding SignInCommand}">
+            </Button>
+            <Button
+                WidthRequest="300"
+                BackgroundColor="MidnightBlue"
+                TextColor="White"
+                Text="Sign up"
+                IsEnabled="{Binding IsFormValid}"
+                Command="{Binding SignUpCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

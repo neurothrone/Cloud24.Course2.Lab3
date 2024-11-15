@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleStore.Maui.Client.ViewModels"
+             x:Class="SimpleStore.Maui.Client.Views.Pages.ProductsPage"
+             x:DataType="viewModels:ProductListViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20">
+            <CollectionView
+                ItemsSource="{Binding StoreProducts}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                       ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:StoreProductViewModel">
+                        <Border Padding="10"
+                                Stroke="DarkSlateBlue"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 20"
+                                BackgroundColor="AliceBlue">
+
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <VerticalStackLayout Grid.Row="0"
+                                                     Grid.Column="0">
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        Text="{Binding Name}" />
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontSize="18">
+
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span
+                                                    Text="{Binding Price, StringFormat='{0:F2}'}" />
+                                                <Span Text=" " />
+                                                <Span
+                                                    Text="{Binding 
+                                                      Source={RelativeSource 
+                                                      AncestorType={x:Type viewModels:ProductListViewModel}}, 
+                                                      Path=CurrencyFormat}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontSize="16"
+                                        Text="{Binding QuantityStatus}" />
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1"
+                                        Margin="10,0"
+                                        VerticalOptions="Center"
+                                        BackgroundColor="SeaGreen"
+                                        TextColor="White"
+                                        Text="Add"
+                                        Command="{Binding 
+                                          Source={RelativeSource 
+                                          AncestorType={x:Type viewModels:ProductListViewModel}}, 
+                                          Path=AddProductCommand}"
+                                        CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            TargetType="Button"
+                                            Value="0"
+                                            Binding="{Binding Quantity}">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

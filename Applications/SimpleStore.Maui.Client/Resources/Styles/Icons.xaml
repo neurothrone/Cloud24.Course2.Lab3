@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <FontImage x:Key="CartIcon" FontFamily="FaSolid"
+               Glyph="&#xf07a;" Size="22" Color="MidnightBlue" />
+    <FontImage x:Key="DisabledCartIcon" FontFamily="FaSolid"
+               Glyph="&#xf07a;" Size="22" Color="Gray" />
+
+    <FontImage x:Key="ClearIcon" FontFamily="FaSolid"
+               Glyph="&#xf2ed;" Size="22" Color="MidnightBlue" />
+    <FontImage x:Key="DisabledClearIcon" FontFamily="FaSolid"
+               Glyph="&#xf2ed;" Size="22" Color="Gray" />
+
+    <FontImage x:Key="SignOutIcon" FontFamily="FaSolid"
+               Glyph="&#xf2f5;" Size="22" Color="MidnightBlue" />
+
+</ResourceDictionary>

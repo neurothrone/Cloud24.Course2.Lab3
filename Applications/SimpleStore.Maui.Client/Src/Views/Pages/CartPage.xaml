@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleStore.Maui.Client.ViewModels"
+             xmlns:controls1="clr-namespace:SimpleStore.Maui.Client.Views.Controls"
+             x:Class="SimpleStore.Maui.Client.Views.Pages.CartPage"
+             x:DataType="viewModels:ProductListViewModel"
+             Title="Cart">
+
+    <ContentPage.ToolbarItems>
+        <controls1:BindableToolbarItem Text="Checkout"
+                                      Order="Primary"
+                                      Command="{Binding CheckoutCommand}"
+                                      EnabledIcon="{StaticResource CartIcon}"
+                                      DisabledIcon="{StaticResource DisabledCartIcon}" />
+
+        <controls1:BindableToolbarItem Text="Clear Cart"
+                                      Order="Primary"
+                                      Command="{Binding ClearCartCommand}"
+                                      EnabledIcon="{StaticResource ClearIcon}"
+                                      DisabledIcon="{StaticResource DisabledClearIcon}" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20">
+            <CollectionView
+                ItemsSource="{Binding CartProducts}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                       ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            Text="No products in cart." />
+                    </ContentView>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:CartProductViewModel">
+                        <Border Padding="10"
+                                Stroke="MidnightBlue"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 20"
+                                BackgroundColor="AliceBlue">
+
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <VerticalStackLayout Grid.Row="0"
+                                                     Grid.Column="0">
+                                    
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        Text="{Binding Name}" />
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontSize="18">
+                                        <Label.FormattedText>
+                                            
+                                            <FormattedString>
+                                                <Span
+                                                    Text="{Binding Price, StringFormat='{0:F2}'}" />
+                                                <Span Text=" " />
+                                                <Span
+                                                    Text="{Binding 
+                                                      Source={RelativeSource 
+                                                      AncestorType={x:Type viewModels:ProductListViewModel}}, 
+                                                      Path=CurrencyFormat}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontSize="18"
+                                        Text="{Binding Quantity}" />
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1"
+                                        VerticalOptions="Center"
+                                        Margin="10,0"
+                                        BackgroundColor="DarkRed"
+                                        TextColor="White"
+                                        Text="Remove"
+                                        Command="{Binding 
+                                          Source={RelativeSource 
+                                          AncestorType={x:Type viewModels:ProductListViewModel}}, 
+                                          Path=RemoveProductCommand}"
+                                        CommandParameter="{Binding .}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

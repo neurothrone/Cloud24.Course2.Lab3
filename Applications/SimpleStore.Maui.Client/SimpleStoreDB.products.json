@@ -1,0 +1,32 @@
+[
+  {
+    "product_id": "228d0a39279c457788a244a9915e42a1",
+    "name": "Apples, 1kg",
+    "price": {
+      "$numberDouble": "15.0"
+    },
+    "quantity": {
+      "$numberInt": "20"
+    }
+  },
+  {
+    "product_id": "228d0a39279c457788a244a9915e42a2",
+    "name": "Bananas, 1kg",
+    "price": {
+      "$numberDouble": "30.0"
+    },
+    "quantity": {
+      "$numberInt": "10"
+    }
+  },
+  {
+    "product_id": "228d0a39279c457788a244a9915e42a3",
+    "name": "Milk, 1L",
+    "price": {
+      "$numberDouble": "22.0"
+    },
+    "quantity": {
+      "$numberInt": "15"
+    }
+  }
+]
