@@ -1,8 +1,3 @@
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Text.Json;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using SimpleStore.Core.Enums;
 using SimpleStore.Core.Interfaces;
@@ -13,6 +8,10 @@ using SimpleStore.Core.ViewModels;
 using SimpleStore.Maui.Client.Messages;
 using SimpleStore.Maui.Client.Navigation;
 using SimpleStore.Maui.Client.Services;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Text.Json;
+using System.Windows.Input;
 
 namespace SimpleStore.Maui.Client.ViewModels;
 
@@ -72,7 +71,7 @@ public class ProductListViewModel :
         AddProductCommand = new Command<ProductViewModel>(AddProduct);
         RemoveProductCommand = new Command<ProductViewModel>(RemoveProduct);
 
-        CheckoutCommand = new AsyncRelayCommand(Checkout, HasProductsInCart);
+        CheckoutCommand = new Command(Checkout, HasProductsInCart);
         ClearCartCommand = new Command(() => ClearCart(returnCart: true), HasProductsInCart);
 
         CartProducts.CollectionChanged += CartProducts_CollectionChanged;
@@ -234,20 +233,17 @@ public class ProductListViewModel :
 
     #region Navigate to Checkout Page
 
-    private async Task Checkout()
+    private void Checkout()
     {
-        try
+        MainThread.InvokeOnMainThreadAsync(async () =>
         {
             var parameters = new Dictionary<string, object>
             {
                 { "products", CartProductsToJson() },
             };
             await _navigator.GoToAsync(nameof(AppRoute.Checkout), parameters);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        });
+
     }
 
     private string CartProductsToJson()

@@ -16,7 +16,14 @@ public partial class AppShell : Shell
 
         // If the current navigation stack is not at root, pop all pages except the root
         var stack = Current.Navigation.NavigationStack;
-        while (stack.Count > 1)
-            Current.Navigation.RemovePage(stack[stack.Count - 1]);
+        try
+        {
+            while (stack.Count > 1)
+                Current.Navigation.RemovePage(stack[stack.Count - 1]);
+        }
+        catch
+        {
+            // ignored
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SimpleStore.Core.Interfaces;
 using SimpleStore.Core.Services;
 using SimpleStore.Maui.Client.Navigation;
@@ -43,26 +45,26 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
         // !: NOTE -> MongoDB Repository
-        // var assembly = Assembly.GetExecutingAssembly();
-        // using var stream = assembly.GetManifestResourceStream("SimpleStore.Maui.Client.appsettings.json");
-        // var config = new ConfigurationBuilder()
-        // .AddJsonStream(stream)
-        // .Build();
-        // builder.Configuration.AddConfiguration(config);
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream("SimpleStore.Maui.Client.appsettings.json");
+        var config = new ConfigurationBuilder()
+            .AddJsonStream(stream)
+            .Build();
+        builder.Configuration.AddConfiguration(config);
 
         builder.Services.AddSingleton<ICustomerRepository, CustomerMongoDbRepository>(_ =>
-                // !: Local MongoDB
-                new CustomerMongoDbRepository(
-                    connectionString: "mongodb://localhost:27017",
-                    databaseName: "SimpleStoreDB"
-                )
-            // !: Cloud MongoDB
+            // !: Local MongoDB
             // new CustomerMongoDbRepository(
-            //     connectionString: builder.Configuration.GetConnectionString("MongoDbCloudConnection") ??
-            //                       throw new Exception("MongoDB connection string not found."),
-            //     databaseName: "SimpleStoreDB",
-            //     isCloud: true
+            //     connectionString: "mongodb://localhost:27017",
+            //     databaseName: "SimpleStoreDB"
             // )
+            // !: Cloud MongoDB
+            new CustomerMongoDbRepository(
+                connectionString: builder.Configuration.GetConnectionString("MongoDbCloudConnection") ??
+                                  throw new Exception("MongoDB connection string not found."),
+                databaseName: "SimpleStoreDB",
+                isCloud: true
+            )
         );
 
         // !: NOTE -> Local File Repository
@@ -78,18 +80,18 @@ public static class MauiProgram
         builder.Services.AddSingleton<IProductService, ProductService>();
         // !: NOTE -> MongoDB Repository
         builder.Services.AddSingleton<IProductRepository, ProductMongoDbRepository>(_ =>
-                // !: Local MongoDB
-                new ProductMongoDbRepository(
-                    connectionString: "mongodb://localhost:27017",
-                    databaseName: "SimpleStoreDB"
-                )
-            // !: Cloud MongoDB
+            // !: Local MongoDB
             // new ProductMongoDbRepository(
-            //     connectionString: builder.Configuration.GetConnectionString("MongoDbCloudConnection") ??
-            //                       throw new Exception("MongoDB connection string not found."),
-            //     databaseName: "SimpleStoreDB",
-            //     isCloud: true
+            //     connectionString: "mongodb://localhost:27017",
+            //     databaseName: "SimpleStoreDB"
             // )
+            // !: Cloud MongoDB
+            new ProductMongoDbRepository(
+                connectionString: builder.Configuration.GetConnectionString("MongoDbCloudConnection") ??
+                                  throw new Exception("MongoDB connection string not found."),
+                databaseName: "SimpleStoreDB",
+                isCloud: true
+            )
         );
         // !: NOTE -> In-Memory Repository
         // builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>(_ =>
