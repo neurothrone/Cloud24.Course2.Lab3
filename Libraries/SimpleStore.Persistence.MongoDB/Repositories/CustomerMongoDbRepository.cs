@@ -12,7 +12,8 @@ public class CustomerMongoDbRepository : BaseMongoDbRepository, ICustomerReposit
 
     public CustomerMongoDbRepository(
         string connectionString,
-        string databaseName) : base(connectionString, databaseName)
+        string databaseName,
+        bool isCloud = false) : base(connectionString, databaseName, isCloud)
     {
     }
 

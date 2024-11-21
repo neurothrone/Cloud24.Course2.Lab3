@@ -70,6 +70,7 @@
 
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+<!--        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />-->
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0"/>
@@ -77,8 +78,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Libraries\SimpleStore.Core\SimpleStore.Core.csproj" />
-      <ProjectReference Include="..\..\Libraries\SimpleStore.Persistence.FileStorage\SimpleStore.Persistence.FileStorage.csproj" />
-      <ProjectReference Include="..\..\Libraries\SimpleStore.Persistence.InMemory\SimpleStore.Persistence.InMemory.csproj" />
       <ProjectReference Include="..\..\Libraries\SimpleStore.Persistence.MongoDB\SimpleStore.Persistence.MongoDB.csproj" />
       <ProjectReference Include="..\..\Libraries\SimpleStore.Persistence.Shared\SimpleStore.Persistence.Shared.csproj" />
     </ItemGroup>

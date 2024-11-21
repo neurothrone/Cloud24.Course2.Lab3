@@ -10,8 +10,10 @@ public class ProductMongoDbRepository : BaseMongoDbRepository, IProductRepositor
 {
     private const string CollectionName = "products";
 
-    public ProductMongoDbRepository(string connectionString, string databaseName) : base(connectionString,
-        databaseName)
+    public ProductMongoDbRepository(
+        string connectionString,
+        string databaseName,
+        bool isCloud = false) : base(connectionString, databaseName, isCloud)
     {
     }
 

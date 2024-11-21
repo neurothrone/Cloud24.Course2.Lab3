@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Text.Json;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using SimpleStore.Core.Enums;
 using SimpleStore.Core.Interfaces;
@@ -71,7 +72,7 @@ public class ProductListViewModel :
         AddProductCommand = new Command<ProductViewModel>(AddProduct);
         RemoveProductCommand = new Command<ProductViewModel>(RemoveProduct);
 
-        CheckoutCommand = new Command(Checkout, HasProductsInCart);
+        CheckoutCommand = new AsyncRelayCommand(Checkout, HasProductsInCart);
         ClearCartCommand = new Command(() => ClearCart(returnCart: true), HasProductsInCart);
 
         CartProducts.CollectionChanged += CartProducts_CollectionChanged;
@@ -197,23 +198,28 @@ public class ProductListViewModel :
 
     private void ClearCart(bool returnCart = true)
     {
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
-            if (returnCart)
-                ReturnCartProductsToStore();
+        if (returnCart)
+            ReturnCartProductsToStore();
 
-            CartProducts.Clear();
-        });
+        MainThread.BeginInvokeOnMainThread(() => { CartProducts.Clear(); });
     }
 
     private void ReturnCartProductsToStore()
     {
-        foreach (var product in CartProducts)
+        try
         {
-            for (int i = 0; i < product.Quantity; i++)
+            foreach (var product in CartProducts)
             {
-                ReturnProductToStore(product);
+                for (int i = 0; i < product.Quantity; i++)
+                {
+                    ReturnProductToStore(product);
+                }
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 
@@ -228,14 +234,20 @@ public class ProductListViewModel :
 
     #region Navigate to Checkout Page
 
-    private async void Checkout()
+    private async Task Checkout()
     {
-        var parameters = new Dictionary<string, object>
+        try
         {
-            { "products", CartProductsToJson() },
-        };
-
-        await _navigator.GoToAsync(nameof(AppRoute.Checkout), parameters);
+            var parameters = new Dictionary<string, object>
+            {
+                { "products", CartProductsToJson() },
+            };
+            await _navigator.GoToAsync(nameof(AppRoute.Checkout), parameters);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     private string CartProductsToJson()

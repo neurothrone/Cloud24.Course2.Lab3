@@ -1,0 +1,6 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongodb-sandbox
+    ports:
+      - "27017:27017"
