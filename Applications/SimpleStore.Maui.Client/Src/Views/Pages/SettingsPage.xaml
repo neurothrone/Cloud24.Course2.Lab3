@@ -48,5 +48,19 @@
                 </FormattedString>
             </Label.FormattedText>
         </Label>
+
+        <BoxView Margin="0,20"
+                 Color="Black"
+                 HeightRequest="1" />
+
+        <Grid ColumnDefinitions="*,100"
+              VerticalOptions="Center">
+            <Label Grid.Column="0"
+                   FontSize="18"
+                   Text="Delete Account" />
+            <Button Grid.Column="1"
+                    Text="Delete"
+                    Command="{Binding DeleteAccountCommand}" />
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

@@ -11,7 +11,8 @@ namespace SimpleStore.Maui.Client.ViewModels;
 
 public class AuthViewModel :
     ViewModel,
-    IRecipient<CheckoutCompletedMessage>
+    IRecipient<CheckoutCompletedMessage>,
+    IRecipient<AccountDeletedMessage>
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly IDialogService _dialogService;
@@ -84,7 +85,8 @@ public class AuthViewModel :
         SignInCommand = new AsyncRelayCommand(SignInAsync);
         SignUpCommand = new AsyncRelayCommand(SignUpAsync);
 
-        WeakReferenceMessenger.Default.Register(this);
+        WeakReferenceMessenger.Default.Register<CheckoutCompletedMessage>(this);
+        WeakReferenceMessenger.Default.Register<AccountDeletedMessage>(this);
     }
 
     protected override void Initialize()
@@ -150,6 +152,16 @@ public class AuthViewModel :
         // MainThread.InvokeOnMainThreadAsync(async () =>
         //     await _authenticationService.UpdateCustomerAsync(_appState.Customer));
         Task.Run(async () => await _authenticationService.UpdateCustomerAsync(_appState.Customer));
+    }
+
+    #endregion
+
+    #region IRecipient<AccountDeletedMessage>
+
+    public void Receive(AccountDeletedMessage message)
+    {
+        _authenticationService.RemoveCustomer(_appState.Customer?.Id ?? string.Empty);
+        SignOut();
     }
 
     #endregion

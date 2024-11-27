@@ -21,7 +21,8 @@ public class AuthenticationService : IAuthenticationService
         var result = await _customerRepository.RetrieveAllCustomersAsync();
         result.When(
             onSuccess: customers => _customers.AddRange(
-                customers.Select(c => CustomerFactory.CreateCustomer(c.ToCustomer()))),
+                customers.Select(c => CustomerFactory.CreateCustomer(c.ToCustomer()))
+            ),
             onFailure: _ => { }
         );
     }
@@ -72,6 +73,15 @@ public class AuthenticationService : IAuthenticationService
             },
             onFailure: _ => { }
         );
+    }
+
+    public void RemoveCustomer(string customerId)
+    {
+        var customer = _customers.FirstOrDefault(c => c.Id == customerId);
+        if (customer is null)
+            return;
+
+        _customers.Remove(customer);
     }
 
     #endregion
