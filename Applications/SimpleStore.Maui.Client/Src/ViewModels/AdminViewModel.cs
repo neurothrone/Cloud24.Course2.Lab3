@@ -123,7 +123,15 @@ public partial class AdminViewModel :
                     Price = product.Price,
                     Quantity = product.Quantity
                 });
-                MainThread.BeginInvokeOnMainThread(() => Products.Add(productViewModel));
+                
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Products.Add(productViewModel);
+                    
+                    Name = string.Empty;
+                    Price = 0;
+                    Quantity = 1;
+                });
                 WeakReferenceMessenger.Default.Send(new ProductAddedMessage(productViewModel));
             },
             onFailure: _ => { }
