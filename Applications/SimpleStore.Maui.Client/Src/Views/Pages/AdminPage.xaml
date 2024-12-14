@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleStore.Maui.Client.ViewModels"
+             x:Class="SimpleStore.Maui.Client.Views.Pages.AdminPage"
+             x:DataType="viewModels:AdminViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <Label Text="Add Product"
+                   Margin="0,0,0,10"
+                   HorizontalOptions="Center"
+                   FontSize="Large" />
+            
+            <Label Text="Product Name"
+                   Margin="0,0,0,5"/>
+            <Entry Placeholder="Name"
+                   Text="{Binding Name}" />
+            
+            <Label Text="Product Price"
+                   Margin="0,10,0,5"/>
+            <Entry Placeholder="Price"
+                   Keyboard="Numeric"
+                   Text="{Binding Price}" />
+            
+            <Label Text="Product Quantity"
+                   Margin="0,10,0,5"/>
+            <Entry Placeholder="Quantity"
+                   Keyboard="Numeric"
+                   Text="{Binding Quantity}" />
+            
+            <Button Text="Add Product"
+                    BackgroundColor="SeaGreen"
+                    Margin="0,20"
+                    Command="{Binding AddProductCommand}" />
+
+            <CollectionView ItemsSource="{Binding Products}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                       ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:StoreProductViewModel">
+                        <Border Padding="10"
+                                Stroke="DarkSlateBlue"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 20"
+                                BackgroundColor="AliceBlue">
+
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <VerticalStackLayout Grid.Row="0"
+                                                     Grid.Column="0">
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        Text="{Binding Name}" />
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontSize="18">
+
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span
+                                                    Text="{Binding Price, StringFormat='{0:F2}'}" />
+                                                <Span Text=" " />
+                                                <Span
+                                                    Text="{Binding 
+                                                      Source={RelativeSource 
+                                                      AncestorType={x:Type viewModels:AdminViewModel}}, 
+                                                      Path=CurrencyFormat}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        FontSize="16"
+                                        Text="{Binding QuantityStatus}" />
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1"
+                                        Margin="10,0"
+                                        VerticalOptions="Center"
+                                        BackgroundColor="DarkRed"
+                                        TextColor="White"
+                                        Text="Remove"
+                                        Command="{Binding 
+                                          Source={RelativeSource 
+                                          AncestorType={x:Type viewModels:AdminViewModel}}, 
+                                          Path=RemoveProductCommand}"
+                                        CommandParameter="{Binding .}">
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

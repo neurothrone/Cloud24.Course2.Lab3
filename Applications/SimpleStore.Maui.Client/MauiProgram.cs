@@ -116,6 +116,7 @@ public static class MauiProgram
     {
         builder.Services.AddSingleton<AuthViewModel>();
         builder.Services.AddSingleton<ProductListViewModel>();
+        builder.Services.AddSingleton<AdminViewModel>();
 
         builder.Services.AddTransient<CheckoutViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
@@ -126,6 +127,7 @@ public static class MauiProgram
     // ReSharper disable once UnusedMethodReturnValue.Local
     private static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
     {
+        builder.Services.AddTransient<AdminPage>();
         builder.Services.AddTransient<ProductsPage>();
         builder.Services.AddTransient<CartPage>();
         builder.Services.AddTransient<CheckoutPage>();

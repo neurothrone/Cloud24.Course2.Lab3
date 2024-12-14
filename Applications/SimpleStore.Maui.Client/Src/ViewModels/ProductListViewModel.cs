@@ -19,7 +19,9 @@ public class ProductListViewModel :
     ViewModel,
     IRecipient<CheckoutCompletedMessage>,
     IRecipient<ClearCartMessage>,
-    IRecipient<CurrencyChangedMessage>
+    IRecipient<CurrencyChangedMessage>,
+    IRecipient<ProductRemovedMessage>,
+    IRecipient<ProductAddedMessage>
 {
     private readonly INavigator _navigator;
     private readonly IProductService _productService;
@@ -91,6 +93,8 @@ public class ProductListViewModel :
         WeakReferenceMessenger.Default.Register<CheckoutCompletedMessage>(this);
         WeakReferenceMessenger.Default.Register<ClearCartMessage>(this);
         WeakReferenceMessenger.Default.Register<CurrencyChangedMessage>(this);
+        WeakReferenceMessenger.Default.Register<ProductRemovedMessage>(this);
+        WeakReferenceMessenger.Default.Register<ProductAddedMessage>(this);
     }
 
     private bool HasProductsInCart() => CartProducts.Count > 0;
@@ -110,6 +114,7 @@ public class ProductListViewModel :
             .Select(p => new StoreProductViewModel(
                 new Product
                 {
+                    Id = p.Id,
                     Name = p.Name,
                     Price = _currencyService.Convert(p.Price, Currency.Sek, _appState.Currency),
                     Quantity = p.Quantity
@@ -151,7 +156,7 @@ public class ProductListViewModel :
         }
 
         var productToAdd = new CartProductViewModel(
-            new Product { Name = product.Name, Price = product.Price, Quantity = 1 }
+            new Product { Id = product.Id, Name = product.Name, Price = product.Price, Quantity = 1 }
         );
 
         CartProducts.Add(productToAdd);
@@ -243,7 +248,6 @@ public class ProductListViewModel :
             };
             await _navigator.GoToAsync(nameof(AppRoute.Checkout), parameters);
         });
-
     }
 
     private string CartProductsToJson()
@@ -311,6 +315,37 @@ public class ProductListViewModel :
     public async void Receive(CurrencyChangedMessage message)
     {
         await UpdateAllProductsCurrency(message.Currency);
+    }
+
+    #endregion
+
+    #region IRecipient<ProductRemovedMessage>
+
+    public void Receive(ProductRemovedMessage message)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            var storeProduct = StoreProducts.FirstOrDefault(p => p.Id.Equals(message.ProductId));
+            if (storeProduct is null)
+                return;
+
+            StoreProducts.Remove(storeProduct);
+
+            var cartProduct = CartProducts.FirstOrDefault(p => p.Id.Equals(message.ProductId));
+            if (cartProduct is null)
+                return;
+
+            CartProducts.Remove(cartProduct);
+        });
+    }
+
+    #endregion
+
+    #region IRecipient<ProductAddedMessage>
+
+    public void Receive(ProductAddedMessage message)
+    {
+        MainThread.BeginInvokeOnMainThread(() => StoreProducts.Add(message.Product));
     }
 
     #endregion

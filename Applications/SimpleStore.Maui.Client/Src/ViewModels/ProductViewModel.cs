@@ -7,6 +7,8 @@ public class ProductViewModel : ViewModel
 {
     public Product Product { get; }
 
+    public string Id => Product.Id;
+
     public string Name
     {
         get => Product.Name;
